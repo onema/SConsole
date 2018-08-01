@@ -7,6 +7,7 @@ Example
 ### Create a command: 
 
 ```scala
+// HideCommand.scala
 import io.onema.command.Command
 
 class HideCommand extends Command("hide") {
@@ -20,14 +21,14 @@ class HideCommand extends Command("hide") {
          |
        |Options:
     """.stripMargin)
+    addTrailArg(trailArg[String](
+      name = "where",
+      required = false,
+      descr = "Hiding location",
+      default = Some("under a turtle")
+    ))
   }
-  addTrailArg(trailArg[String](
-    name = "where",
-    required = false,
-    descr = "Hiding location",
-    default = Some("under a turtule")
-  ))
-  addTrailArg(trailArg[Int](name = "foo", required = false))
+  
   override def execute(): Unit = {
     val location = getOption("where").getOrElse("???")
     println(s"Ninja is hidden $location")
@@ -35,9 +36,10 @@ class HideCommand extends Command("hide") {
 }
 ```
 
-attack command
+Now create another command
 
 ```scala
+// AttackCommand.scala
 class AttackCommand extends Command("attack") {
 
   //--- Methods ---
@@ -78,9 +80,10 @@ class AttackCommand extends Command("attack") {
 }
 ```
 
-### Create an applicaiton
+### Create and run the application
 
 ```scala
+// Main.scala
 import io.onema.command.Application
 
 object Main {
@@ -94,7 +97,7 @@ object Main {
   """.stripMargin
     val description =
       """
-        |Usage: ninja [hide]
+        |Usage: ninja [hide|attack]
         |Ninja command
         |
         |Options:
@@ -111,8 +114,23 @@ object Main {
 
 ### Run the command
 ```bash
-ninja --hide "under a rock"
-ninja --hide
-ninja --help
+> ninja --hide "under a rock"
+ninja is hiding under a rock
+
+> ninja --hide
+ninja is hiding under a turtle
+
+> ninja attack  --exclude dragons --exclude civilians
+Ninja is attacking dragons, badguys, animals
+
+> ninja --help
+Usage: ninja attack [OPTION]
+Instruct the ninja to go and attack!
+
+Options:
+     
+  -e, --exclude  <arg>...   Things to exclude while attacking.
+  -s, --scream  <arg>       Scream while attacking
+  -h, --help                Show help message
 
 ```
