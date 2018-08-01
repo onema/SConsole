@@ -1,9 +1,16 @@
 SConsole
 ========
-Simple model around scallop to define a CLI application and sub-commands for the app.
+Simple model around scallop that streamlines and removes the boilerplate to define CLI applications and create sub-commands.
+
+In this model you create `Commands` that configure each `Subcommand`. These command is also in charge of executing the command logic. 
+Once those commands have been defined you can add them to an application. 
 
 Example
 -------
+> **NOTE:**
+>
+> This example was inspired by the article "**[Creating Neat .NET Core Command Line Apps](https://samyn.co/post/creating-neat-net-core-console-apps/)**"
+
 ### Create a command: 
 
 ```scala
@@ -14,13 +21,7 @@ class HideCommand extends Command("hide") {
 
   //--- Methods ---
   override def configure(): Unit = {
-    description(
-      s"""
-         |Usage: ninja hide [OPTION]
-         |Instruct the ninja to hide in a specific location.
-         |
-       |Options:
-    """.stripMargin)
+    description("Instruct the ninja to hide in a specific location.")
     addTrailArg(trailArg[String](
       name = "where",
       required = false,
@@ -49,8 +50,8 @@ class AttackCommand extends Command("attack") {
          |Usage: ninja attack [OPTION]
          |Instruct the ninja to go and attack!
          |
-       |Options:
-    """.stripMargin)
+         |Options:
+      """.stripMargin)
   }
   addOption(opt[List[String]](
     name = "exclude",
@@ -114,16 +115,16 @@ object Main {
 
 ### Run the command
 ```bash
-> ninja --hide "under a rock"
+> ninja hide "under a rock"
 ninja is hiding under a rock
 
-> ninja --hide
+> ninja hide
 ninja is hiding under a turtle
 
-> ninja attack  --exclude dragons --exclude civilians
+> ninja attack  --exclude civilians
 Ninja is attacking dragons, badguys, animals
 
-> ninja --help
+> ninja attack --help
 Usage: ninja attack [OPTION]
 Instruct the ninja to go and attack!
 
