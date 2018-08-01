@@ -2,7 +2,7 @@ SConsole
 ========
 Simple model around scallop that streamlines and removes the boilerplate to define CLI applications and create sub-commands.
 
-In this model you create `Commands` that configure each `Subcommand`. These command is also in charge of executing the command logic. 
+In this model you create `Commands` that configure each `Subcommand`. These commands are also in charge of executing the command logic. 
 Once those commands have been defined you can add them to an application. 
 
 Example
