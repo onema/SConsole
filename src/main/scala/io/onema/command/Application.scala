@@ -58,7 +58,6 @@ class Application(var name: String, var version: String = "NA", var description:
     config.verify()
     config.subcommand match {
       case Some(command) =>
-        print(command.printedName)
         command.asInstanceOf[Command].execute()
       case _ =>
         new BasicConf(Seq("--help"), Seq(name))
