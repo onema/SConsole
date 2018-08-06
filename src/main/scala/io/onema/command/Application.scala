@@ -6,7 +6,7 @@
   *
   * copyright (c) 2018, Juan Manuel Torres (http://onema.io)
   *
-  * @author Juan Manuel Torres <kinojman@gmail.com>
+  * @author Juan Manuel Torres <software@onema.io>
   */
 
 package io.onema.command
@@ -20,7 +20,7 @@ object Application {
   private class BasicConf(args: Seq[String], commandNameAndAliases: Seq[String]) extends ScallopConf(args, commandNameAndAliases)
 }
 
-class Application(var name: String, var version: String = "NA", var description: String = "NA") {
+class Application(val name: String, val version: String = "", val description: String = "", val footer: String = "") {
 
   //--- Fields ---
   private val commands = new mutable.HashMap[String, Command]()
@@ -29,32 +29,45 @@ class Application(var name: String, var version: String = "NA", var description:
   def find(name: String): Option[Command] = commands.get(name)
 
   /**
-    *
-    * @param command
+    * Add a single command to the application
+    * @param command the command to be added to the application
     */
   def add(command: Command): Unit = {
     commands(command.name) = command
   }
 
   /**
-    *
-    * @param cmds
+    * Add a collection of commands to the application
+    * @param commands collection of Command
     */
   def addCommands(commands: Seq[Command]): Unit = commands.foreach(add)
 
   /**
-    *
-    * @param args
+    * Run the application
+    * @param args CLI Arguments
     */
   def run(args: Seq[String]): Unit = {
     val config = new BasicConf(args, Seq(name))
-    config.version(version)
-    config.banner(description)
+
+    // Set application help information
+    if(version.nonEmpty) config.version(version)
+    if(description.nonEmpty) {
+      config.banner(
+        s"""
+           |$description
+           |Options:
+      """.stripMargin)
+    }
+    if(footer.nonEmpty) config.footer(footer)
+
+    // Set each of the commands in the configuration
     commands.values.foreach(command => {
       command.configure()
       command.setApplication(this)
       config.addSubcommand(command)
     })
+
+    // Verify and execute sub-command
     config.verify()
     config.subcommand match {
       case Some(command) =>

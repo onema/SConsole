@@ -6,7 +6,7 @@
   *
   * copyright (c) 2018, Juan Manuel Torres (http://onema.io)
   *
-  * @author Juan Manuel Torres <kinojman@gmail.com>
+  * @author Juan Manuel Torres <software@onema.io>
   */
 
 package io.onema.command
@@ -31,24 +31,23 @@ abstract class Command(commandName: String) extends Subcommand(commandName) {
   def name: String = commandNameAndAliases.head
 
   /**
-    *
-    * @param app
+    * @param app The main application running the commands
     */
   def setApplication(app: Application): Unit =  application = app
 
   /**
-    *
-    * @param opt
-    * @tparam A
+    * Add an option to the command. This can be any of the Scallop supported option types and definitions
+    * @param opt a ScallopOption[A] returned by the opt function
+    * @tparam A Option Type
     */
   def addOption[A](opt: ScallopOption[A]): Unit = {
     options(opt.name) = opt
   }
 
   /**
-    *
-    * @param optionName
-    * @tparam A
+    * Retrieve any of the Scallop supported option types and definitions stored in the command
+    * @param optionName The name given to the option definition
+    * @tparam A Option type
     * @return
     */
   def getOption[A](optionName: String): ScallopOption[A] = {
@@ -59,24 +58,24 @@ abstract class Command(commandName: String) extends Subcommand(commandName) {
   }
 
   /**
-    *
-    * @param arg
-    * @tparam A
+    * Add a trail arg, this is a wrapper around addOption
+    * @param arg a ScallopOption[A] returned by the trailArg function
+    * @tparam A  Option type
     */
   def addTrailArg[A](arg: ScallopOption[A]): Unit = addOption(arg)
 
   /**
-    *
-    * @param argName
-    * @tparam A
+    * Retrieve a trailArg by name
+    * @param argName The name given to the trailArg
+    * @tparam A Option Type
     * @return
     */
   def getTrailArg[A](argName: String): ScallopOption[A] = getOption(argName)
 
   /**
-    *
-    * @param map
-    * @tparam A
+    * Add Scallop properties "props"
+    * @param map Dictionary of String, A returned by the scallop props function
+    * @tparam A Type of the map values
     */
   def addProps[A](map: Map[String, A]): Unit = {
     val name = map("name").asInstanceOf[String]
@@ -84,9 +83,9 @@ abstract class Command(commandName: String) extends Subcommand(commandName) {
   }
 
   /**
-    *
-    * @param propName
-    * @tparam A
+    * Retrieve a property by name
+    * @param propName name of the property
+    * @tparam A type of the property
     * @return
     */
   def getProps[A](propName: String): Map[String, A] = {
@@ -97,13 +96,11 @@ abstract class Command(commandName: String) extends Subcommand(commandName) {
   }
 
   /**
-    *
-    * @param description
+    * @param description description of the command
     */
   def description(description: String): Unit = banner(
     s"""
        |$description
-       |
+       |Options:
      """.stripMargin)
-
 }
