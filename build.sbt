@@ -4,7 +4,7 @@ organization := "io.onema"
 
 name := "SConsole"
 
-version := "0.0.2"
+version := "0.0.3"
 
 scalaVersion := "2.12.6"
 
@@ -13,6 +13,10 @@ libraryDependencies ++= {
 
     // Json De/Serializer
     "org.rogach"                % "scallop_2.12"              % "3.1.3",
+
+    // Logging
+    "com.typesafe.scala-logging"  %% "scala-logging"                      % "3.7.2",
+    "ch.qos.logback"              % "logback-classic"                     % "1.1.7",
 
     // Testing
     "org.scalatest"             %% "scalatest"                % "3.0.0"       % "test"

@@ -11,6 +11,7 @@
 
 package io.onema.command
 
+import com.typesafe.scalalogging.Logger
 import org.rogach.scallop.{ScallopOption, Subcommand}
 
 import scala.collection.mutable
@@ -19,11 +20,12 @@ import scala.util.{Failure, Success, Try}
 abstract class Command(commandName: String) extends Subcommand(commandName) {
 
   //--- Fields ---
+  protected val log: Logger = Logger("sconsole")
   protected val options = new mutable.HashMap[String, Any]
   protected var application: Application = _
 
   //--- Abstract Methods ---
-  def configure(): Unit = {}
+  def configure(): Unit
 
   def execute(): Unit
 

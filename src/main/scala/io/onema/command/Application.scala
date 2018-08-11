@@ -73,7 +73,7 @@ class Application(val name: String, val version: String = "", val description: S
       case Some(command) =>
         command.asInstanceOf[Command].execute()
       case _ =>
-        new BasicConf(Seq("--help"), Seq(name))
+        new BasicConf(Seq("--help"), Seq(name)).verify()
     }
   }
 }
