@@ -22,6 +22,7 @@ abstract class Command(commandName: String) extends Subcommand(commandName) {
   //--- Fields ---
   protected val log: Logger = Logger("sconsole")
   protected val options = new mutable.HashMap[String, Any]
+  protected var properties: Map[String, Any] = _
   protected var application: Application = _
 
   //--- Abstract Methods ---
@@ -79,23 +80,14 @@ abstract class Command(commandName: String) extends Subcommand(commandName) {
     * @param map Dictionary of String, A returned by the scallop props function
     * @tparam A Type of the map values
     */
-  def addProps[A](map: Map[String, A]): Unit = {
-    val name = map("name").asInstanceOf[String]
-    options(name) = map
-  }
+  def addProps[A<: Any](map: Map[String, A]): Unit = properties = map
 
   /**
     * Retrieve a property by name
-    * @param propName name of the property
-    * @tparam A type of the property
+    * @tparam A type of the values of the properties
     * @return
     */
-  def getProps[A](propName: String): Map[String, A] = {
-    getOption(propName).toOption match {
-      case Some(x) => x
-      case None => throw new Exception("Property \"" + propName + "\" not found")
-    }
-  }
+  def getProps[A<:  Any]: Map[String, A] = properties.asInstanceOf[Map[String, A]]
 
   /**
     * @param description description of the command

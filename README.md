@@ -41,6 +41,8 @@ Now create another command
 
 ```scala
 // AttackCommand.scala
+import io.onema.command.Command
+
 class AttackCommand extends Command("attack") {
 
   //--- Methods ---

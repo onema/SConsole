@@ -4,9 +4,9 @@ organization := "io.onema"
 
 name := "SConsole"
 
-version := "0.0.3"
+version := "0.0.5"
 
-scalaVersion := "2.12.6"
+scalaVersion := "2.12.7"
 
 libraryDependencies ++= {
   Seq(
